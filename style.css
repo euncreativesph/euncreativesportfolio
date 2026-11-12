@@ -262,3 +262,22 @@ footer .brand span{color:var(--gold)}
   .tool-icon{width:28px;height:28px}
   .tool-icon svg{width:21px;height:21px}
 }
+
+/* Customer reviews */
+.reviews{background:var(--paper);border-top:3px solid var(--ink)}
+.reviews-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.reviews h2{font-family:'League Spartan',sans-serif;font-size:clamp(32px,4.5vw,56px);font-weight:800;line-height:1.05;margin:0 0 20px;letter-spacing:-.04em}
+.reviews h2 em{color:var(--navy)}
+.reviews-intro > p:last-of-type{max-width:400px;color:#5f5f75;font-size:15px}
+.review-skills{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:22px 0 0;padding:0}
+.review-skills li{border:1px solid var(--line);border-radius:30px;padding:5px 12px;font-size:12px}
+.review-invite{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:32px;box-shadow:var(--shadow)}
+.review-mark{display:block;font-family:Georgia,serif;font-size:80px;line-height:.8;color:var(--navy)}
+.review-invite h3{font-family:'League Spartan',sans-serif;font-size:26px;line-height:1.15;margin:12px 0}
+.review-invite > p{font-size:14px;color:#5f5f75;line-height:1.7;margin:0 0 24px}
+.review-invite .review-email-note{font-size:11px;margin:18px 0 0}
+@media(max-width:600px){
+  .reviews-layout{grid-template-columns:minmax(0,1fr);gap:28px}
+  .review-invite{padding:24px}
+  .review-invite h3{font-size:24px}
+}
