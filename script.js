@@ -28,6 +28,7 @@ const PROJECTS = [
   { id: 'rlqBIpldvwc', title: 'Talking Head 01', cat: 'heads' },
   { id: 'd4ijnQFpjDo', title: 'Talking Head 02', cat: 'heads' },
   { id: '0VfMaLLGWAo', title: 'Talking Head 03', cat: 'heads' },
+  { id: 'GSP-BabdJPY', title: 'Talking Head 04', cat: 'heads' },
 ];
 
 /* ---------- Helpers ---------- */
