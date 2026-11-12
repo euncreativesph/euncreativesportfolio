@@ -64,11 +64,10 @@ function getRating(id) {
 function ratingHTML(p) {
   const rating = getRating(p.id);
   return `<div class="video-rating" role="group" aria-label="Rate ${p.title}">
-    <p class="rating-label">Rate this video</p>
+    <span class="rating-label">Rate</span>
     <div class="rating-stars">${[1, 2, 3, 4, 5].map(star =>
       `<button type="button" class="rating-star${star <= rating ? ' is-filled' : ''}" data-rating="${star}" aria-label="Rate ${p.title} ${star} out of 5 stars" aria-pressed="${star === rating}"><span aria-hidden="true">★</span></button>`
     ).join('')}</div>
-    <p class="rating-status" aria-live="polite">${rating ? `Your rating: ${rating}/5` : 'Tap a star'}</p>
   </div>`;
 }
 
@@ -77,6 +76,7 @@ function cardHTML(p, index) {
   return `
     <article class="work-card" data-cat="${p.cat}" data-index="${index}"
              style="--c1:${cat.c1};--c2:${cat.c2}">
+      <span class="rating-badge" aria-live="polite" ${getRating(p.id) ? '' : 'hidden'}>${getRating(p.id) ? `★ ${getRating(p.id)}/5 · You` : ''}</span>
       <div class="poster">
         <img class="video-thumb" src="https://i.ytimg.com/vi/${p.id}/hqdefault.jpg" alt="${p.title}" loading="lazy">
         <button class="poster-icon" type="button" aria-label="Play ${p.title}">${playIcon}</button>
@@ -119,10 +119,12 @@ grid.addEventListener('click', e => {
       button.classList.toggle('is-filled', star <= rating);
       button.setAttribute('aria-pressed', String(star === rating));
     });
-    card.querySelector('.rating-status').textContent = `Your rating: ${rating}/5`;
+    const badge = card.querySelector('.rating-badge');
+    badge.hidden = false;
+    badge.textContent = `★ ${rating}/5 · You`;
     return;
   }
-  if (e.target.closest('.video-rating')) return;
+  if (e.target.closest('.video-rating, .rating-badge')) return;
   const poster = card.querySelector('.poster');
   if (!p || !poster || poster.dataset.playing) return;
   poster.dataset.playing = '1';
