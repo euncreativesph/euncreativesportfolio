@@ -262,3 +262,18 @@ footer .brand span{color:var(--gold)}
   .tool-icon{width:28px;height:28px}
   .tool-icon svg{width:21px;height:21px}
 }
+
+/* Visitor video ratings */
+.ratings-note{margin:0 0 20px;font-size:13px;color:#5f5f75}
+.video-rating{padding:14px 12px 12px;background:#fff;color:var(--ink);cursor:default;border-top:2px solid var(--ink)}
+.rating-label{margin:0;font-size:12px;font-weight:700}
+.rating-stars{display:flex;width:100%;margin:4px 0}
+.rating-star{display:grid;place-items:center;flex:1;min-width:0;min-height:44px;border:0;border-radius:6px;padding:0;background:transparent;color:#767686;font-size:25px;line-height:1;cursor:pointer;transition:color .15s ease,background .15s ease}
+.rating-star.is-filled{color:#a65d00}
+.rating-star:hover,.rating-star:focus-visible{color:#a65d00;background:#fff0cc}
+.rating-status{margin:0;font-size:11px;color:#5f5f75}
+@media(max-width:600px){
+  .video-rating{padding:10px 6px}
+  .rating-label,.rating-status{padding-inline:3px}
+  .rating-star{font-size:22px}
+}

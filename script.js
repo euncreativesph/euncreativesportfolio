@@ -48,6 +48,29 @@ usedCats.forEach((key, i) => {
 /* ---------- Render cards ---------- */
 const grid = $('#workGrid');
 let cardObserver;
+const videoRatings = new Map();
+
+function getRating(id) {
+  if (videoRatings.has(id)) return videoRatings.get(id);
+  let rating = 0;
+  try {
+    const saved = Number(localStorage.getItem(`eun-video-rating:${id}`));
+    if (Number.isInteger(saved) && saved >= 1 && saved <= 5) rating = saved;
+  } catch { /* Ratings still work when browser storage is unavailable. */ }
+  videoRatings.set(id, rating);
+  return rating;
+}
+
+function ratingHTML(p) {
+  const rating = getRating(p.id);
+  return `<div class="video-rating" role="group" aria-label="Rate ${p.title}">
+    <p class="rating-label">Rate this video</p>
+    <div class="rating-stars">${[1, 2, 3, 4, 5].map(star =>
+      `<button type="button" class="rating-star${star <= rating ? ' is-filled' : ''}" data-rating="${star}" aria-label="Rate ${p.title} ${star} out of 5 stars" aria-pressed="${star === rating}"><span aria-hidden="true">★</span></button>`
+    ).join('')}</div>
+    <p class="rating-status" aria-live="polite">${rating ? `Your rating: ${rating}/5` : 'Tap a star'}</p>
+  </div>`;
+}
 
 function cardHTML(p, index) {
   const cat = CATEGORIES[p.cat] || CATEGORIES.all;
@@ -58,6 +81,7 @@ function cardHTML(p, index) {
         <img class="video-thumb" src="https://i.ytimg.com/vi/${p.id}/hqdefault.jpg" alt="${p.title}" loading="lazy">
         <button class="poster-icon" type="button" aria-label="Play ${p.title}">${playIcon}</button>
       </div>
+      ${ratingHTML(p)}
     </article>`;
 }
 
@@ -84,6 +108,21 @@ grid.addEventListener('click', e => {
   const card = e.target.closest('.work-card');
   if (!card) return;
   const p = PROJECTS[Number(card.dataset.index)];
+  if (!p) return;
+  const ratingButton = e.target.closest('.rating-star');
+  if (ratingButton) {
+    const rating = Number(ratingButton.dataset.rating);
+    videoRatings.set(p.id, rating);
+    try { localStorage.setItem(`eun-video-rating:${p.id}`, String(rating)); } catch { /* Keep the rating for this visit. */ }
+    card.querySelectorAll('.rating-star').forEach(button => {
+      const star = Number(button.dataset.rating);
+      button.classList.toggle('is-filled', star <= rating);
+      button.setAttribute('aria-pressed', String(star === rating));
+    });
+    card.querySelector('.rating-status').textContent = `Your rating: ${rating}/5`;
+    return;
+  }
+  if (e.target.closest('.video-rating')) return;
   const poster = card.querySelector('.poster');
   if (!p || !poster || poster.dataset.playing) return;
   poster.dataset.playing = '1';
