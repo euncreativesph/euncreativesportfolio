@@ -44,7 +44,7 @@ img,video{display:block;max-width:100%}
 .brand{font-family:'League Spartan',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:24px;line-height:1;color:var(--white)}
 .brand span{display:block;font-family:Arimo,sans-serif;font-weight:500;letter-spacing:.42em;font-size:8px;text-transform:uppercase;color:var(--gold);margin-top:5px}
 .header-logo{display:flex;align-items:center;gap:12px;padding:8px 0}
-.header-logo img{display:block;width:72px;height:64px;object-fit:contain;flex-shrink:0}
+.header-logo svg{display:block;width:72px;height:64px;object-fit:contain;flex-shrink:0}
 .site-header nav{display:flex;align-items:center;gap:28px;font-size:13px;font-weight:600;line-height:1}
 .site-header nav a{transition:color .2s;display:inline-flex;align-items:center}
 .site-header nav a:not(.nav-cta):hover,.site-header nav a.active{color:var(--gold)}
@@ -200,7 +200,7 @@ footer .brand span{color:var(--gold)}
   }
   .site-header .brand{align-self:flex-start;flex-shrink:0}
   .header-logo{padding:0;gap:10px}
-  .header-logo img{width:56px;height:50px}
+  .header-logo svg{width:56px;height:50px}
   .brand{font-size:22px}
   .site-header nav{justify-content:space-between;gap:8px;font-size:13px}
   .site-header nav a{min-height:44px;justify-content:center;padding:0 4px}
