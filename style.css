@@ -281,3 +281,7 @@ footer .brand span{color:var(--gold)}
   .review-invite{padding:24px}
   .review-invite h3{font-size:24px}
 }
+
+.customer-testimonial{margin:16px 0 26px}
+.customer-testimonial blockquote{margin:0;font-family:'League Spartan',sans-serif;font-size:clamp(22px,2.5vw,28px);font-weight:600;line-height:1.4;color:var(--ink)}
+.customer-testimonial figcaption{margin-top:18px;font-size:12px;color:#5f5f75}
