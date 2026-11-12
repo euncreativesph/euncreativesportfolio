@@ -5,7 +5,8 @@ process.chdir(path.resolve(__dirname, '..'));
 
 // Only these project files are uploaded automatically.
 const files = ['index.html', 'style.css', 'script.js', 'README.txt',
-  'scripts/github-auto-sync.cjs', '.vscode/tasks.json'];
+  'scripts/github-auto-sync.cjs', '.vscode/tasks.json',
+  'package.json', 'package-lock.json', 'netlify.toml', '.gitignore', 'netlify/functions', 'tests'];
 const git = (...args) => execFileSync('git', args, {
   encoding: 'utf8', env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
   timeout: 30000, stdio: ['ignore', 'pipe', 'pipe'],

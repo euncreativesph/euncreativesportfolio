@@ -49,6 +49,33 @@ usedCats.forEach((key, i) => {
 const grid = $('#workGrid');
 let cardObserver;
 const videoRatings = new Map();
+const publicRatings = new Map();
+const ratingEndpoint = '/.netlify/functions/ratings';
+let visitorId;
+try { visitorId = localStorage.getItem('eun-rating-visitor'); } catch {}
+if (!/^[a-f0-9-]{36}$/i.test(visitorId || '')) {
+  visitorId = crypto.randomUUID();
+  try { localStorage.setItem('eun-rating-visitor', visitorId); } catch {}
+}
+
+function updateRatingBadge(card, id) {
+  const summary = publicRatings.get(id);
+  const badge = card.querySelector('.rating-badge');
+  badge.hidden = !summary?.count;
+  badge.textContent = summary?.count ? `★ ${summary.average.toFixed(1)} · ${summary.count}` : '';
+  badge.setAttribute('aria-label', summary?.count ? `Average ${summary.average} out of 5 from ${summary.count} ratings` : 'No ratings yet');
+}
+
+async function loadPublicRatings() {
+  try {
+    const response = await fetch(ratingEndpoint, { cache: 'no-store' });
+    if (!response.ok) return;
+    const summaries = await response.json();
+    Object.entries(summaries).forEach(([id, summary]) => publicRatings.set(id, summary));
+    grid.querySelectorAll('.work-card').forEach(card => updateRatingBadge(card, PROJECTS[Number(card.dataset.index)].id));
+  } catch { /* Visitors can retry by selecting a star. */ }
+}
+
 
 function getRating(id) {
   if (videoRatings.has(id)) return videoRatings.get(id);
@@ -68,6 +95,7 @@ function ratingHTML(p) {
     <div class="rating-stars">${[1, 2, 3, 4, 5].map(star =>
       `<button type="button" class="rating-star${star <= rating ? ' is-filled' : ''}" data-rating="${star}" aria-label="Rate ${p.title} ${star} out of 5 stars" aria-pressed="${star === rating}"><span aria-hidden="true">★</span></button>`
     ).join('')}</div>
+    <span class="rating-status" aria-live="polite"></span>
   </div>`;
 }
 
@@ -76,7 +104,7 @@ function cardHTML(p, index) {
   return `
     <article class="work-card" data-cat="${p.cat}" data-index="${index}"
              style="--c1:${cat.c1};--c2:${cat.c2}">
-      <span class="rating-badge" aria-live="polite" ${getRating(p.id) ? '' : 'hidden'}>${getRating(p.id) ? `★ ${getRating(p.id)}/5 · You` : ''}</span>
+      <span class="rating-badge" aria-live="polite" hidden></span>
       <div class="poster">
         <img class="video-thumb" src="https://i.ytimg.com/vi/${p.id}/hqdefault.jpg" alt="${p.title}" loading="lazy">
         <button class="poster-icon" type="button" aria-label="Play ${p.title}">${playIcon}</button>
@@ -87,6 +115,7 @@ function cardHTML(p, index) {
 
 function renderCards(list) {
   grid.innerHTML = list.map((p, i) => cardHTML(p, PROJECTS.indexOf(p))).join('');
+  grid.querySelectorAll('.work-card').forEach(card => updateRatingBadge(card, PROJECTS[Number(card.dataset.index)].id));
   observeCards();
 }
 
@@ -102,9 +131,10 @@ filtersEl.addEventListener('click', e => {
 });
 
 renderCards(PROJECTS.slice());
+loadPublicRatings();
 
 /* ---------- Play YouTube videos inside the cards ---------- */
-grid.addEventListener('click', e => {
+grid.addEventListener('click', async e => {
   const card = e.target.closest('.work-card');
   if (!card) return;
   const p = PROJECTS[Number(card.dataset.index)];
@@ -112,16 +142,32 @@ grid.addEventListener('click', e => {
   const ratingButton = e.target.closest('.rating-star');
   if (ratingButton) {
     const rating = Number(ratingButton.dataset.rating);
-    videoRatings.set(p.id, rating);
-    try { localStorage.setItem(`eun-video-rating:${p.id}`, String(rating)); } catch { /* Keep the rating for this visit. */ }
-    card.querySelectorAll('.rating-star').forEach(button => {
-      const star = Number(button.dataset.rating);
-      button.classList.toggle('is-filled', star <= rating);
-      button.setAttribute('aria-pressed', String(star === rating));
-    });
-    const badge = card.querySelector('.rating-badge');
-    badge.hidden = false;
-    badge.textContent = `★ ${rating}/5 · You`;
+    const buttons = card.querySelectorAll('.rating-star');
+    buttons.forEach(button => { button.disabled = true; });
+    const status = card.querySelector('.rating-status');
+    status.textContent = 'Saving…';
+    try {
+      const response = await fetch(ratingEndpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ video: p.id, visitor: visitorId, rating })
+      });
+      if (!response.ok) throw new Error('Unable to save');
+      const summary = await response.json();
+      publicRatings.set(p.id, summary);
+      videoRatings.set(p.id, rating);
+      try { localStorage.setItem(`eun-video-rating:${p.id}`, String(rating)); } catch {}
+      buttons.forEach(button => {
+        const star = Number(button.dataset.rating);
+        button.classList.toggle('is-filled', star <= rating);
+        button.setAttribute('aria-pressed', String(star === rating));
+      });
+      updateRatingBadge(card, p.id);
+      status.textContent = 'Thanks!';
+    } catch {
+      status.textContent = 'Could not save. Try again.';
+    } finally {
+      buttons.forEach(button => { button.disabled = false; });
+    }
     return;
   }
   if (e.target.closest('.video-rating, .rating-badge')) return;
