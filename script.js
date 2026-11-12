@@ -1,4 +1,4 @@
-/* Eun Creatives — YouTube portfolio gallery. */
+/* Eun Studio — YouTube portfolio gallery. */
 
 // Category keys + the two colors used for each card's gradient.
 const CATEGORIES = {
