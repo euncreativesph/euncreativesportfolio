@@ -54,6 +54,19 @@ CONTACT + STATS
 HOW TO PREVIEW
 - Open index.html in a browser, or use VS Code's Live Server.
 
+AUTOMATIC GITHUB SAVES
+- Reopen this folder in VS Code and allow automatic tasks when prompted.
+- Or select Terminal > Run Task > GitHub: auto-save portfolio.
+- Saved changes upload after five seconds without further edits while VS Code
+  and the task are running. Unsaved editor changes are not uploaded.
+- Includes index.html, style.css, script.js, README.txt and the sync setup.
+  New video files or other files must be added and committed manually.
+- Requires Node.js and GitHub push access through your local Git credentials.
+- Only runs on main. Manually staged changes pause automatic commits.
+- Push errors retry every minute; conflicts require manual resolution.
+- Stop using Terminal > Terminate Task. Disable future starts using
+  Tasks: Manage Automatic Tasks in Folder from the Command Palette.
+
 HOW TO PUBLISH FOR FREE WITH NETLIFY
 1. Go to https://app.netlify.com/drop
 2. Sign in or create a free Netlify account.
