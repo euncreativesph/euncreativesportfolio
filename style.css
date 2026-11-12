@@ -263,30 +263,37 @@ footer .brand span{color:var(--gold)}
   .tool-icon svg{width:21px;height:21px}
 }
 
-/* Customer reviews */
-.reviews{background:var(--paper);border-top:3px solid var(--ink)}
-.reviews-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+/* Customer reviews — scattered notes */
+.reviews{background:var(--paper);border-top:3px solid var(--ink);overflow:hidden}
+.reviews-layout{display:flex;flex-direction:column;gap:40px}
+.reviews-intro{align-self:center;text-align:center;max-width:650px}
 .reviews h2{font-family:'League Spartan',sans-serif;font-size:clamp(32px,4.5vw,56px);font-weight:800;line-height:1.05;margin:0 0 20px;letter-spacing:-.04em}
-.reviews h2 em{color:var(--navy)}
-.reviews-intro > p:last-of-type{max-width:400px;color:#5f5f75;font-size:15px}
-.review-skills{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:22px 0 0;padding:0}
+.reviews h2 em{display:block;color:var(--navy)}
+.reviews-intro > p:last-of-type{color:#5f5f75;font-size:15px}
+.review-skills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;list-style:none;margin:22px 0 0;padding:0}
 .review-skills li{border:1px solid var(--line);border-radius:30px;padding:5px 12px;font-size:12px}
-.review-invite{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:32px;box-shadow:var(--shadow)}
-.review-mark{display:block;font-family:Georgia,serif;font-size:80px;line-height:.8;color:var(--navy)}
-.review-invite h3{font-family:'League Spartan',sans-serif;font-size:26px;line-height:1.15;margin:12px 0}
-.review-invite > p{font-size:14px;color:#5f5f75;line-height:1.7;margin:0 0 24px}
-.review-invite .review-email-note{font-size:11px;margin:18px 0 0}
-@media(max-width:600px){
-  .reviews-layout{grid-template-columns:minmax(0,1fr);gap:28px}
-  .review-invite{padding:24px}
-  .review-invite h3{font-size:24px}
+.review-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 28px;align-items:start;padding:24px 16px 48px;width:100%}
+.customer-testimonial{--tilt:-3deg;--offset:0px;--note:#fff;margin:0;position:relative;background:var(--note);border:2px solid var(--ink);border-radius:16px;padding:30px 24px 24px;box-shadow:6px 8px 0 rgba(10,10,36,.16);transform:translateY(var(--offset)) rotate(var(--tilt));animation:review-float 7s ease-in-out infinite;transition:box-shadow .2s ease}
+.customer-testimonial::before{content:'“';display:block;font-family:Georgia,serif;font-size:48px;line-height:.65;color:var(--navy);margin-bottom:12px}
+.customer-testimonial:nth-child(2){--tilt:3deg;--offset:26px;--note:#fff0bd;animation-delay:-2s}
+.customer-testimonial:nth-child(3){--tilt:-2deg;--offset:6px;--note:#e2f9eb;animation-delay:-4s}
+.customer-testimonial:nth-child(4){--tilt:2deg;--offset:12px;--note:#fce0ef;animation-delay:-1s}
+.customer-testimonial:nth-child(5){--tilt:-4deg;--offset:36px;animation-delay:-5s}
+.customer-testimonial:nth-child(6){--tilt:3deg;--offset:16px;--note:#eae7ff;animation-delay:-3s}
+.customer-testimonial:hover{animation-play-state:paused;box-shadow:8px 12px 0 rgba(10,10,36,.22);z-index:1}
+.customer-testimonial blockquote{margin:0;font-family:'League Spartan',sans-serif;font-size:19px;font-weight:600;line-height:1.45;color:var(--ink)}
+.customer-testimonial figcaption{margin-top:20px;font-size:11px;color:#5f5f75}
+.review-invite{align-self:center;text-align:center}
+.review-email-note{font-size:11px;color:#5f5f75;margin:16px 0 0}
+@keyframes review-float{0%,100%{transform:translateY(var(--offset)) rotate(var(--tilt))}50%{transform:translateY(calc(var(--offset) - 7px)) rotate(var(--tilt))}}
+@media(max-width:900px){
+  .review-board{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 24px}
 }
-
-.customer-testimonial{margin:16px 0 26px}
-.customer-testimonial blockquote{margin:0;font-family:'League Spartan',sans-serif;font-size:clamp(22px,2.5vw,28px);font-weight:600;line-height:1.4;color:var(--ink)}
-.customer-testimonial figcaption{margin-top:18px;font-size:12px;color:#5f5f75}
-
-/* Keep multiple client reviews balanced beside the introduction. */
-.reviews-layout{align-items:start}
-.review-invite .customer-testimonial + .customer-testimonial{padding-top:24px;border-top:1px solid var(--line)}
-.review-invite .customer-testimonial blockquote{font-size:clamp(18px,2vw,22px)}
+@media(max-width:600px){
+  .reviews-layout{gap:28px}
+  .review-board{grid-template-columns:minmax(0,1fr);gap:30px;padding:16px 12px 24px}
+  .review-board .customer-testimonial{--offset:0px;--tilt:-2deg;padding:26px 22px 22px;margin-right:10px}
+  .review-board .customer-testimonial:nth-child(even){--tilt:2deg;margin-left:10px;margin-right:0}
+  .customer-testimonial blockquote{font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){.customer-testimonial{animation:none}}
