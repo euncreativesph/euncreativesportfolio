@@ -244,3 +244,21 @@ footer .brand span{color:var(--gold)}
   .aurora,.status-dot,.ticker-track{animation:none}
   .work-card{opacity:1;transform:none;transition:none}
 }
+
+/* Editing tools */
+.editing-tools{margin-top:32px}
+.tools-label{margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,.65)}
+.tools-list{display:flex;flex-wrap:wrap;gap:12px;list-style:none;margin:0;padding:0}
+.tool-badge{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.06);color:var(--white);font-size:13px;font-weight:600}
+.tool-icon{display:grid;place-items:center;flex-shrink:0;width:32px;height:32px;border-radius:7px}
+.tool-icon svg{display:block;width:24px;height:24px;fill:currentColor}
+.tool-premiere .tool-icon{background:#00005b;color:#9999ff}
+.tool-capcut .tool-icon{background:#fff;color:#111}
+.tool-claude .tool-icon{background:#d97757;color:#fff}
+@media(max-width:600px){
+  .editing-tools{margin-top:26px}
+  .tools-list{gap:8px}
+  .tool-badge{gap:8px;padding:8px 10px;font-size:12px}
+  .tool-icon{width:28px;height:28px}
+  .tool-icon svg{width:21px;height:21px}
+}
